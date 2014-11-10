@@ -4,6 +4,8 @@ set -e
 
 . ${INSTALLER_DIR}/wizard
 
+OUTPUT="/etc/${APP_NAME}/conf.d/redis"
+
 start_daemon() {
 	service redis-server status &>/dev/null || service redis-server start
 
@@ -18,6 +20,8 @@ case "$(wiz_get "redis/autoinstall")" in
 	"skip")
 		;;
 	"install")
+		echo "REDIS_URL=redis://127.0.0.1:6379" > "$OUTPUT"
+		chown ${APP_USER}.${APP_GROUP} "$OUTPUT"
 		start_daemon
 		;;
 esac
