@@ -1,0 +1,6 @@
+Template: redis/autoinstall
+Type: select
+Choices: skip,install
+Translations: Skip,Install new redis server
+Default: install
+Description: Do you want to install a local redis server?

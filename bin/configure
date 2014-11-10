@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+. "${INSTALLER_DIR}/wizard"
+
+input_start() {
+	wiz_put "redis/autoinstall"
+	if wiz_ask ; then
+		STATE="done"
+	else
+		echo "You must make a choice. Aborting."
+		exit 1
+	fi
+}
+
+state_machine() {
+	case "$1" in
+		"start")
+			input_start
+			;;
+		"done")
+			echo "DONE"
+			break
+			;;
+		*)
+			echo "invalid state: ${STATE}"
+			break
+			;;
+	esac
+}
+
+wizard "start"

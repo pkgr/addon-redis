@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+. ${INSTALLER_DIR}/wizard
+
+OSFAMILY="$(wiz_fact osfamily)"
+
+install_redis() {
+	case "$OSFAMILY" in
+		"debian")
+			wiz_check_package "redis-server" || apt-get install -y redis-server
+			;;
+		"redhat")
+			wiz_check_package "redis-server" || yum install -y redis-server
+			;;
+	esac
+}
+
+case "$(wiz_get "redis/autoinstall")" in
+	"skip")
+		echo "No redis server to install. Skipping."
+		;;
+	"install")
+		install_redis
+		;;
+esac

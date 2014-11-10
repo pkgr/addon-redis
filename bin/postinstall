@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+. ${INSTALLER_DIR}/wizard
+
+start_daemon() {
+	service redis-server status &>/dev/null || service redis-server start
+
+	case "$OSFAMILY" in
+		"redhat")
+			chkconfig redis-server on
+			;;
+	esac
+}
+
+case "$(wiz_get "redis/autoinstall")" in
+	"skip")
+		;;
+	"install")
+		start_daemon
+		;;
+esac
